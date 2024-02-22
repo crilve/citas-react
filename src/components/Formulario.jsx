@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Error from './Error';
 
-const Formulario = ( {pacientes, setPacientes} ) => {
+const Formulario = ( {pacientes, setPacientes, paciente} ) => {
   const [nombre, setNombre] = useState("");
   const [propietario, setPropietario] = useState("");
   const [email, setEmail] = useState("");
@@ -9,6 +9,16 @@ const Formulario = ( {pacientes, setPacientes} ) => {
   const [sintomas, setSintomas] = useState("");
 
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if(Object.keys(paciente).length > 0){
+      setNombre(paciente.nombre)
+      setPropietario(paciente.propietario)
+      setEmail(paciente.email)
+      setFecha(paciente.fecha)
+      setSintomas(paciente.sintomas)
+    }
+  }, [paciente]);
 
   const generarId = () => {
     const random = Math.random().toString(36).substring(2);
@@ -55,7 +65,7 @@ const Formulario = ( {pacientes, setPacientes} ) => {
         Seguimiento Pacientes
       </h2>
 
-      <p className="texl-lg mt-5 text-center mb-10">
+      <p className="text-xl mt-5 text-center mb-10">
         Añade Pacientes y {""}
           <span className="text-indigo-600 font-bold">Administralos</span>
       </p>
@@ -107,7 +117,7 @@ const Formulario = ( {pacientes, setPacientes} ) => {
           type="submit" 
           className="bg-indigo-600 w-full p-3 text-white uppercase font-bold 
           hover:bg-indigo-700 transition-all cursor-pointer rounded-lg"
-          value="Agregar Paciente"
+          value={ paciente.id ? "Editar Paciente" : "Agregar Paciente"}
         />
       </form>
     </div>
